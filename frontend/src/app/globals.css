@@ -1,0 +1,385 @@
+@import "tailwindcss";
+
+:root {
+  /* Light Mode - Wellness & Vitality */
+  --bg: oklch(98% 0.01 260);
+  --fg: oklch(20% 0.02 260);
+  --primary: oklch(78% 0.16 145);
+  /* Vitality Green */
+  --secondary: oklch(68% 0.18 35);
+  /* Energy Orange */
+  --accent: oklch(62% 0.15 240);
+  /* Zen Blue */
+  --muted: oklch(92% 0.02 260);
+  --border: oklch(88% 0.02 260);
+  --card: oklch(100% 0 0);
+  --navbar-bg: rgba(255, 255, 255, 0.8);
+  --navbar-fg: oklch(20% 0.02 260);
+}
+
+.dark {
+  /* Dark Mode - Deep Focus & Recovery */
+  --bg: #000000;
+  --fg: #ffffff;
+  --primary: #14f195;
+  --secondary: #9945ff;
+  --accent: #00ffa3;
+  --muted: #0d0d0d;
+  --border: #1e1e1e;
+  --card: #0a0a0a;
+  --navbar-bg: rgba(0, 0, 0, 0.8);
+  --navbar-fg: #ffffff;
+}
+
+/* Solana Utilities */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #14f195;
+}
+
+.glass-card {
+  background: rgba(13, 13, 13, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.neon-glow-green {
+  box-shadow: 0 0 20px rgba(20, 241, 149, 0.15);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 20px rgba(153, 69, 255, 0.15);
+}
+
+.scanline {
+  width: 100%;
+  height: 100px;
+  z-index: 10;
+  background: linear-gradient(0deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(20, 241, 149, 0.02) 50%,
+      rgba(0, 0, 0, 0) 100%);
+  opacity: 0.1;
+  position: absolute;
+  bottom: 100%;
+  animation: scanline 10s linear infinite;
+}
+
+@keyframes scanline {
+  0% {
+    bottom: 100%;
+  }
+
+  100% {
+    bottom: -100px;
+  }
+}
+
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card);
+
+  --font-sfBold: var(--font-sfBold);
+  --font-sfReg: var(--font-sfReg);
+  --font-sfBlack: var(--font-sfBlack);
+}
+
+::selection {
+  background: var(--primary);
+  color: oklch(20% 0.02 260);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sfReg), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+
+
+.line {
+  position: relative;
+  will-change: transform;
+  overflow: hidden;
+}
+
+
+.sticky-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+  padding: 4rem 2rem;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .sticky-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.grid-card {
+  background-color: var(--muted);
+  border-radius: 2.5rem;
+  overflow: hidden;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.grid-card:hover {
+  transform: translateY(-8px);
+}
+
+.grid-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+}
+
+.grid-card-image-container {
+  width: 100%;
+  aspect-ratio: 16/10;
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: var(--accent);
+}
+
+.grid-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.6;
+}
+
+.grid-card-image-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.image-overlay-text {
+  color: var(--bg);
+  font-size: 2.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  line-height: 0.9;
+  white-space: pre-line;
+  text-align: center;
+}
+
+.grid-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  flex-grow: 1;
+}
+
+.grid-card-title {
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--fg);
+  line-height: 1.2;
+  font-family: var(--font-ppMontreal), sans-serif;
+}
+
+.grid-card-description {
+  font-size: 1.1rem;
+  color: var(--fg);
+  opacity: 0.8;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.grid-card-button {
+  align-self: flex-start;
+  background: var(--fg);
+  color: var(--bg);
+  padding: 1rem 2.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: auto;
+  transition: all 0.3s ease;
+}
+
+.grid-card-button:hover {
+  background: var(--fg);
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+
+
+.transition-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100svh;
+  display: flex;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+
+.block {
+  flex: 1;
+  height: 100%;
+  background-color: #222;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.logo-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100svh;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #222;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+
+.logo-container {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+
+@media (max-width: 1000px) {
+  h1 {
+    font-size: 3rem;
+  }
+}
+
+/* How It Works Section */
+.how-it-works-card {
+  background-color: var(--muted);
+  border-radius: 2.5rem;
+  padding: 3rem;
+  display: flex;
+  gap: 2.5rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.how-it-works-card:hover {
+  transform: translateY(-8px);
+}
+
+.card-icon-wrapper {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  background: color-mix(in srgb, var(--fg) 5%, transparent);
+  border-radius: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg);
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-number {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg);
+  opacity: 0.4;
+}
+
+.card-title {
+  font-size: 2.25rem;
+  font-weight: 500;
+  color: var(--fg);
+  line-height: 1.1;
+  font-family: var(--font-ppMontreal), sans-serif;
+}
+
+.card-description {
+  font-size: 1.15rem;
+  color: var(--fg);
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 500px;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .how-it-works-card {
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+
+  .card-icon-wrapper {
+    width: 60px;
+    height: 60px;
+  }
+
+  .card-title {
+    font-size: 1.75rem;
+  }
+}
+
+/* Navbar Logo Theme Logic */
+.nav-logo {
+  filter: invert(1);
+  transition: filter 0.3s ease;
+}
+
+.dark .nav-logo {
+  filter: invert(0);
+}

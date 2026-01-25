@@ -1,0 +1,19 @@
+<svg
+   width="320"
+   height="80"
+   viewBox="0 0 320 80"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(10, 15) scale(2.5)">
+    <path
+       d="M 7,0 5,5 v 9 h 9 L 16,8 V 5 H 10 V 2 C 10,0.895431 9.10457,0 8,0 Z"
+       fill="#ffffff" />
+    <path
+       d="M 3,5 H 0 v 9 h 3 z"
+       fill="#ffffff" />
+  </g>
+  <text
+     x="65"
+     y="55"
+     style="font-family:'Delight Mother', sans-serif;font-size:42px;letter-spacing:2px;fill:#ffffff">KEEP-UP</text>
+</svg>
