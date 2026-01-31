@@ -1,41 +1,39 @@
-# Production requirements for StackNStay Backend
-# Base FastAPI stack
-fastapi==0.123.0
-uvicorn[standard]==0.38.0
-fastapi==0.123.0
-uvicorn[standard]==0.38.0
-gunicorn==23.0.0
+# Web Framework
+fastapi
+uvicorn[standard]
 
-# Pydantic settings
-pydantic==2.12.5
-pydantic-settings==2.12.0
+# Data Validation
+pydantic
+pydantic-settings
+email-validator
 
-# Database and migrations
-sqlalchemy==2.0.44
-asyncpg==0.31.0
+# Database
+sqlalchemy[asyncio]
 alembic
+asyncpg
+psycopg2-binary
 
-# Async HTTP (used by some tools)
-aiohttp==3.13.2
-
-# Authentication / Security
-python-jose==3.5.0
-cryptography==46.0.3
-bcrypt
+# Security
+python-jose[cryptography]
 passlib[bcrypt]
-email-validator==2.3.0
+bcrypt
+python-dotenv
 
-# LLM / Embeddings
-langchain==0.1.17
-langchain-groq==0.1.1
-groq==0.37.0
-cohere==5.11.4
+# Real-time
+python-socketio
 
-# Vector store
-faiss-cpu==1.7.4
-numpy==1.26.4
+# AI & Agents
+langchain-groq
+langchain-core
+langgraph
+langchain-cohere
+tavily-python
+opik
 
-# Notes:
-# - Dev/test packages (pytest, httpx, rich, tenacity, requests, sentry-sdk, etc.) were removed
-#   from this runtime requirements file. Add them to a `requirements-dev.txt` if needed.
-# - Keep `alembic` unpinned here for flexibility; pin if reproducible CI installs are required.
+# Utilities
+apscheduler
+aiohttp
+numpy
+faiss-cpu
+requests
+ 
