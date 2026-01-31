@@ -18,7 +18,13 @@ const PageTransition = ({ children }: PageTransitionProps) => {
     const blocksRef = useRef<HTMLDivElement[]>([]);
     const isTransitioning = useRef(false);
 
+    // Paths to exclude from transition
+    const excludedPaths = ["/onboarding", "/login", "/register", "/signup"];
+    const shouldTransition = !excludedPaths.some(path => pathname?.startsWith(path));
+
     useEffect(() => {
+        if (!shouldTransition) return;
+
         const createBlocks = () => {
             if (!overlayRef.current) return;
             overlayRef.current.innerHTML = "";

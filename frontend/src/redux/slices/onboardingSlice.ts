@@ -69,11 +69,18 @@ export const submitOnboardingAsync = createAsyncThunk(
     'onboarding/submit',
     async (data: OnboardingData, { rejectWithValue }) => {
         try {
-            const response = await startOnboarding({
-                ...data,
+            // Map frontend data to backend schema
+            const payload = {
+                primary_goal: "wellness", // Default required field
+                goal_details: data.resolution_text,
+                past_attempts: data.past_attempts || undefined,
+                life_constraints: data.life_constraints && data.life_constraints.length > 0 ? data.life_constraints : undefined,
                 occupation: data.occupation || undefined,
                 occupation_details: data.occupation_details || undefined
-            });
+            };
+
+            // Cast to any to bypass strict type check for the backend payload
+            const response = await startOnboarding(payload as any);
             return response;
         } catch (error: unknown) {
             return rejectWithValue(error instanceof Error ? error.message : 'Onboarding failed');
