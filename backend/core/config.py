@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import List
+from pydantic import field_validator, AnyHttpUrl, model_validator
+from typing import List, Union
 from functools import lru_cache
 
 
@@ -28,11 +29,29 @@ class Settings(BaseSettings):
     SIMPLE_AGENT_MODEL: str = "llama-3.2-70b-8192"
     MAX_REQUESTS_PER_MINUTE: int = 60
 
+    # CORS Configuration
+    BACKEND_CORS_ORIGINS: List[AnyHttpUrl] = []
+
     CORS_ORIGINS: List[str] = [
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "http://localhost:8080",
+        "https://keep-up-dun.vercel.app",  
+        "https://keep-up-dun.vercel.app/",
     ]
+
+    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
+    @classmethod
+    def assemble_cors_origins(cls, v: Union[str, List[str]]) -> Union[List[str], str]:
+        if isinstance(v, str) and not v.startswith("["):
+            return [i.strip() for i in v.split(",")]
+        elif isinstance(v, (list, str)):
+            return v
+        raise ValueError(v)
+
+    @model_validator(mode="after")
+    def merge_cors_origins(self) -> "Settings":
+        for origin in self.BACKEND_CORS_ORIGINS:
+            if str(origin) not in self.CORS_ORIGINS:
+                self.CORS_ORIGINS.append(str(origin))
+        return self
 
     model_config = SettingsConfigDict(
         env_file=".env",
