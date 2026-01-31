@@ -1,89 +1,86 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { useAppSelector } from '@/redux/hooks';
-import Navbar from '@/components/layouts/Navbar';
-import { createLifeEvent } from '@/lib/lifeEventsApi';
+import AppSidebar from '@/components/layout/AppSidebar';
+import TopBar from '@/components/layout/TopBar';
 import ProfileHeader from './ProfileHeader';
-import ProfileQuickLinks from './ProfileQuickLinks';
-import ProfileInfo from './ProfileInfo';
-import ProfileStats from './ProfileStats';
-import ProfilePreferences from './ProfilePreferences';
-import ProfileEmail from './ProfileEmail';
-import LifeEventForm, { LifeEventData } from './LifeEventForm';
+import { User, Zap } from 'lucide-react';
 
-// Subcomponents
-
-
+/**
+ * ProfilePage - Minimal Identity Hub.
+ * Focused on core user attributes: Username, Resolution, and Streak.
+ */
 export default function ProfilePage() {
   const { user } = useAppSelector(state => state.auth);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [showLifeEventForm, setShowLifeEventForm] = useState(false);
 
-  // Mock stats - in a real app these would come from an API or Redux
+  // Mock stats - focusing on the streak for the simplified profile
   const [stats] = useState({
     currentStreak: 7,
-    totalCheckIns: 42,
-    milestonesEarned: 12,
   });
-
-  const handleLifeEventSubmit = async (data: LifeEventData) => {
-    try {
-      await createLifeEvent(data);
-      setShowLifeEventForm(false);
-    } catch (error) {
-      console.error('Failed to save life event:', error);
-    }
-  };
 
   if (!user) {
     return (
-      <main className="min-h-screen bg-[var(--bg)] text-[var(--fg)] flex items-center justify-center">
-        <Navbar containerRef={containerRef} />
-        <div className="text-center">
-          <p className="text-[var(--muted)]">Please log in to view your profile</p>
+      <div className="flex h-screen bg-background overflow-hidden transition-colors duration-300">
+        <AppSidebar />
+        <div className="flex-1 flex flex-col min-w-0">
+          <TopBar />
+          <main className="flex-1 flex items-center justify-center">
+            <div className="text-center p-8 border border-dashed border-border rounded-[2.5rem] bg-card/50">
+              <User size={48} className="mx-auto mb-4 text-muted-foreground opacity-20" />
+              <h2 className="text-xl font-black text-foreground uppercase tracking-tight mb-2">Unauthorized Access</h2>
+              <p className="text-muted-foreground text-sm max-w-xs">Please initialize your session to view sensitive protocol data.</p>
+            </div>
+          </main>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[var(--bg)] text-[var(--fg)] pb-24 selection:bg-[var(--primary)] selection:text-[var(--bg)] font-[var(--font-ppMontreal)]">
-      <Navbar containerRef={containerRef} />
+    <div className="flex h-screen bg-background overflow-hidden transition-colors duration-300 font-[var(--font-sfReg)]">
+      <AppSidebar />
 
-      <div ref={containerRef} className="max-w-5xl mx-auto px-6 pt-32 space-y-px bg-[var(--border)] border-x border-[var(--border)]">
+      <div className="flex-1 flex flex-col min-w-0">
+        <TopBar />
 
-        <ProfileHeader
-          displayName={user.display_name}
-          username={user.username}
-          resolution={user.resolution || null}
-        />
+        <main className="flex-1 overflow-y-auto custom-scrollbar bg-card/5">
+          <div className="max-w-4xl mx-auto px-8 py-16 space-y-12">
 
-        <ProfileQuickLinks />
-
-        <ProfileInfo
-          resolution={user.resolution || null}
-          occupation={user.occupation || null}
-        />
-
-        <div className="grid md:grid-cols-2 bg-[var(--bg)] border-b border-[var(--border)]">
-          <ProfileStats stats={stats} />
-          <ProfilePreferences onRecordEvent={() => setShowLifeEventForm(true)} />
-        </div>
-
-        <ProfileEmail email={user.email} />
-
-        {showLifeEventForm && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-[var(--bg)]/80 backdrop-blur-sm">
-            <div className="w-full max-w-2xl">
-              <LifeEventForm
-                onSubmit={handleLifeEventSubmit}
-                onCancel={() => setShowLifeEventForm(false)}
+            {/* Minimal Identity Section */}
+            <div className="bg-background border border-border rounded-[3rem] overflow-hidden shadow-2xl shadow-black/20">
+              <ProfileHeader
+                displayName={user.display_name}
+                username={user.username}
+                resolution={user.resolution || null}
               />
+
+              {/* Basic Stats Bar - Integrated at bottom of header card */}
+              <div className="flex items-center justify-center gap-16 py-10 border-t border-border bg-foreground/[0.02]">
+                <div className="text-center space-y-1">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Active Streak</p>
+                  <div className="flex items-center justify-center gap-2">
+                    <Zap size={20} className="text-primary" />
+                    <span className="text-4xl font-black text-foreground uppercase tracking-tight">{stats.currentStreak} Days</span>
+                  </div>
+                </div>
+                <div className="h-10 w-px bg-border hidden sm:block" />
+                <div className="text-center space-y-1">
+                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">Protocol Status</p>
+                  <p className="text-2xl font-black text-primary uppercase tracking-tight">Optimized</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Motivational Quote / Bio Segment */}
+            <div className="px-12 text-center space-y-4">
+              <p className="text-lg text-muted-foreground leading-relaxed italic opacity-60">
+                "Protocol integrity maintained at 98.4%. Your trajectory remains within optimal biological parameters."
+              </p>
             </div>
           </div>
-        )}
+        </main>
       </div>
-    </main>
+    </div>
   );
 }

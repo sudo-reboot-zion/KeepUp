@@ -4,7 +4,7 @@ import React from 'react';
 import {
     LayoutDashboard,
     Calendar,
-    BarChart3,
+    Users,
     Settings,
     LogOut,
     ChevronRight,
@@ -15,12 +15,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 const navItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard', active: true },
-    { icon: Calendar, label: 'Schedules', href: '#', active: false },
-    { icon: BarChart3, label: 'Analytics', href: '#', active: false },
-    { icon: History, label: 'History', href: '#', active: false },
-    { icon: User, label: 'Profile', href: '/profile', active: false },
-    { icon: Settings, label: 'Settings', href: '#', active: false },
+    { icon: LayoutDashboard, label: 'Dashboard', href: '/dashboard' },
+    { icon: Calendar, label: 'Schedules', href: '/schedule' },
+    { icon: Users, label: 'Community', href: '#' },
+    { icon: History, label: 'History', href: '/history' },
+    { icon: User, label: 'Profile', href: '/profile' },
+    { icon: Settings, label: 'Settings', href: '/settings' },
 ];
 
 /**
@@ -49,7 +49,7 @@ export default function AppSidebar() {
                     Protocol Menu
                 </p>
                 {navItems.map((item) => {
-                    const isActive = item.active || pathname === item.href;
+                    const isActive = pathname === item.href;
                     return (
                         <Link
                             key={item.label}

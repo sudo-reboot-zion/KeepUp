@@ -235,7 +235,7 @@ const ReactNav: React.FC<ReactNavProps> = ({ containerRef }) => {
             <div className="flex items-center gap-4">
               <Link
                 href="/login"
-                className="text-sm font-medium hover:text-gray-300 transition-colors"
+                className="text-sm font-medium hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               >
                 Login
               </Link>
@@ -271,6 +271,7 @@ const ReactNav: React.FC<ReactNavProps> = ({ containerRef }) => {
         mediaWrapperRef={menuMediaWrapperRef}
         setColRef={setColRef}
         isOpen={isMenuOpen}
+        onClose={toggleMenu}
       />
     </nav >
   );

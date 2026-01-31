@@ -5,8 +5,8 @@ import { navLinks, secondaryLinks } from "@/lib/data";
 import { useRouter } from "next/navigation";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/slices/authSlice";
-import NotificationBell from "./NotificationBell";
-import { DoorOpen } from "lucide-react";
+import { History, DoorOpen, User, Settings as SettingsIcon } from "lucide-react";
+import Link from "next/link";
 
 interface MenuOverlayProps {
     overlayRef: React.RefObject<HTMLDivElement | null>;
@@ -14,6 +14,7 @@ interface MenuOverlayProps {
     mediaWrapperRef: React.RefObject<HTMLDivElement | null>;
     setColRef: (index: number) => (el: HTMLDivElement | null) => void;
     isOpen: boolean;
+    onClose: () => void;
 }
 
 const MenuOverlay: React.FC<MenuOverlayProps> = ({
@@ -22,6 +23,7 @@ const MenuOverlay: React.FC<MenuOverlayProps> = ({
     mediaWrapperRef,
     setColRef,
     isOpen,
+    onClose,
 }) => {
 
     const router = useRouter();
@@ -41,6 +43,7 @@ const MenuOverlay: React.FC<MenuOverlayProps> = ({
     }, [isOpen]);
 
     const handleLogout = async () => {
+        onClose(); // Close the menu first
         await dispatch(logout());
         router.push("/");
     };
@@ -86,25 +89,32 @@ const MenuOverlay: React.FC<MenuOverlayProps> = ({
                             )}
                         </div>
 
-                        <div className="flex-[2] flex flex-col gap-2" ref={setColRef(1)}>
-                            {secondaryLinks.map((item) => (
-                                <div key={item.label} className="overflow-hidden">
-                                    <a
-                                        href={item.href}
-                                        className="text-[var(--fg)] text-xl lg:text-2xl font-medium hover:text-[var(--fg)]/60 transition-colors"
-                                    >
-                                        {item.label}
-                                    </a>
-                                </div>
-                            ))}
+                        <div className="flex-[2] flex flex-col gap-4" ref={setColRef(1)}>
+                            {secondaryLinks.map((item) => {
+                                const Icon = item.label === 'Profile' ? User : SettingsIcon;
+                                return (
+                                    <div key={item.label} className="overflow-hidden">
+                                        <Link
+                                            href={item.href}
+                                            className="flex items-center gap-3 text-[var(--fg)] text-xl lg:text-2xl font-medium hover:text-[var(--fg)]/60 transition-colors"
+                                        >
+                                            <Icon className="w-6 h-6" />
+                                            <span>{item.label}</span>
+                                        </Link>
+                                    </div>
+                                );
+                            })}
 
                             {isLoggedIn && (
                                 <>
                                     <div className="overflow-hidden mt-4">
-                                        <div className="flex items-center gap-3 text-[var(--fg)] text-xl lg:text-2xl font-medium hover:text-[var(--fg)]/60 transition-colors cursor-pointer">
-                                            <NotificationBell />
-                                            <span>Notifications</span>
-                                        </div>
+                                        <Link
+                                            href="/history"
+                                            className="flex items-center gap-3 text-[var(--fg)] text-xl lg:text-2xl font-medium hover:text-[var(--fg)]/60 transition-colors cursor-pointer"
+                                        >
+                                            <History className="w-6 h-6" />
+                                            <span>History</span>
+                                        </Link>
                                     </div>
 
                                     <div className="overflow-hidden mt-2">

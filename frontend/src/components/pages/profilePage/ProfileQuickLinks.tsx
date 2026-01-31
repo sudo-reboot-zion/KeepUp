@@ -11,26 +11,29 @@ import {
 
 export default function ProfileQuickLinks() {
     return (
-        <div className="grid grid-cols-3 md:grid-cols-6 bg-[var(--bg)] border-b border-[var(--border)]">
-            <QuickLinkIcon icon={<LayoutDashboard className="w-6 h-6" />} href="/dashboard" />
-            <QuickLinkIcon icon={<Activity className="w-6 h-6" />} href="/progress" />
-            <QuickLinkIcon icon={<Dumbbell className="w-6 h-6" />} href="/workout" />
-            <QuickLinkIcon icon={<MessageSquare className="w-6 h-6" />} href="/chat" />
-            <QuickLinkIcon icon={<Brain className="w-6 h-6" />} href="/debate" />
-            <QuickLinkIcon icon={<Zap className="w-6 h-6" />} href="/onboarding" />
+        <div className="grid grid-cols-3 gap-2">
+            <QuickLinkIcon icon={<LayoutDashboard size={20} />} href="/dashboard" label="Home" />
+            <QuickLinkIcon icon={<Activity size={20} />} href="/history" label="Logs" />
+            <QuickLinkIcon icon={<Dumbbell size={20} />} href="/schedule" label="Train" />
+            <QuickLinkIcon icon={<MessageSquare size={20} />} href="/chat" label="Sync" />
+            <QuickLinkIcon icon={<Brain size={20} />} href="/debate" label="Council" />
+            <QuickLinkIcon icon={<Zap size={20} />} href="/onboarding" label="Start" />
         </div>
     );
 }
 
-function QuickLinkIcon({ icon, href }: { icon: React.ReactNode; href: string }) {
+function QuickLinkIcon({ icon, href, label }: { icon: React.ReactNode; href: string; label: string }) {
     return (
         <Link
             href={href}
-            className="aspect-square flex items-center justify-center border-r border-[var(--border)] last:border-r-0 text-[var(--fg)] hover:bg-[var(--primary)] hover:text-[var(--bg)] transition-all duration-300 group"
+            className="flex flex-col items-center justify-center gap-2 p-4 bg-foreground/5 border border-border rounded-2xl hover:bg-primary hover:border-primary group transition-all duration-300"
         >
-            <div className="group-hover:scale-125 transition-transform duration-300">
+            <div className="text-foreground group-hover:text-background group-hover:scale-110 transition-all duration-300">
                 {icon}
             </div>
+            <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground group-hover:text-background transition-colors">
+                {label}
+            </span>
         </Link>
     );
 }

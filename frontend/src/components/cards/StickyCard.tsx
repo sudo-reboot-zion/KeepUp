@@ -1,6 +1,8 @@
 "use client";
 import React from 'react'
 import { stickyCardsData } from '@/lib/data';
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 
 const StickyCard = () => {
     return (
@@ -23,27 +25,35 @@ const StickyCard = () => {
             <div className="sticky-cards-grid">
                 {stickyCardsData.map((cardData, index) => {
                     return (
-                        <div className="grid-card" key={index}>
+                        <Link
+                            key={index}
+                            href={`/features/${cardData.slug}`}
+                            className="grid-card group/card"
+                        >
                             <div className="grid-card-inner">
                                 <div className="grid-card-image-container">
-                                    <img src={cardData.image} alt={cardData.title} className="grid-card-image" />
+                                    <img src={cardData.image} alt={cardData.title} className="grid-card-image transition-transform duration-700 group-hover/card:scale-110" />
                                     <div className="grid-card-image-overlay">
                                         <h2 className="image-overlay-text">{cardData.title.split(' ').join('\n')}</h2>
+                                    </div>
+                                    <div className="absolute top-6 right-6 p-3 rounded-full bg-white/10 backdrop-blur-md opacity-0 group-hover/card:opacity-100 transition-all duration-300 translate-y-2 group-hover/card:translate-y-0">
+                                        <ArrowUpRight className="text-white w-6 h-6" />
                                     </div>
                                 </div>
 
                                 <div className="grid-card-details">
                                     <div className="grid-card-text">
-                                        <h2 className="grid-card-title">{cardData.title}</h2>
+                                        <h2 className="grid-card-title group-hover/card:text-[var(--primary)] transition-colors">{cardData.title}</h2>
                                         <p className="grid-card-description">{cardData.description}</p>
                                     </div>
 
-                                    <button className="grid-card-button">
+                                    <div className="grid-card-button flex items-center gap-2">
                                         Explore Feature
-                                    </button>
+                                        {/* <ArrowUpRight size={18} className="transition-transform group-hover/card:translate-x-1 group-hover/card:-translate-y-1" /> */}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     )
                 })}
             </div>
